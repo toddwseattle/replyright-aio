@@ -5,12 +5,12 @@
   <ProviderName>Contoso</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="replyright-aio"/>
-  <Description DefaultValue="A template to get started."/>
+  <Description DefaultValue="ReplyRight AI"/>
   <IconUrl DefaultValue="https://localhost:3000/assets/replythumb-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/replythumb-128.png"/>
   <SupportUrl DefaultValue="https://www.contoso.com/help"/>
   <AppDomains>
-    <AppDomain>https://www.contoso.com</AppDomain>
+    <AppDomain>https://replyright.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Mailbox"/>
@@ -94,13 +94,13 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GroupLabel" DefaultValue="Contoso Add-in"/>
+        <bt:String id="GroupLabel" DefaultValue="ReplyRight AI"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Show Taskpane"/>
-        <bt:String id="ActionButton.Label" DefaultValue="Perform an action"/>
+        <bt:String id="ActionButton.Label" DefaultValue="Generate an AI Reply"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Opens a pane displaying all available properties."/>
-        <bt:String id="ActionButton.Tooltip" DefaultValue="Perform an action when clicked."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Tweak the AI Reply in the taskpane"/>
+        <bt:String id="ActionButton.Tooltip" DefaultValue="Analyze the message and insert a reply"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

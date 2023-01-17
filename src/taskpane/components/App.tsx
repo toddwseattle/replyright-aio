@@ -1,3 +1,4 @@
+/* global Office */
 import * as React from "react";
 import { DefaultButton } from "@fluentui/react";
 import Header from "./Header";
@@ -10,9 +11,6 @@ export interface AppProps {
   isOfficeInitialized: boolean;
 }
 
-export interface MessageInfo {
-  isReply: boolean;
-}
 export interface AppState {
   listItems: HeroListItem[];
 }
@@ -62,15 +60,19 @@ export default class App extends React.Component<AppProps, AppState> {
       return (
         <Progress
           title={title}
-          logo={require("./../../../assets/logo-filled.png")}
-          message="Please sideload your addin to see app body."
+          logo={require("./../../../assets/replythumb-300.png")}
+          message="Please sideload Replyight to see the application info"
         />
       );
     }
 
     return (
       <div className="ms-welcome">
-        <Header logo={require("./../../../assets/logo-filled.png")} title={this.props.title} message="Welcome" />
+        <Header
+          logo={require("./../../../assets/replythumb-300.png")}
+          title={this.props.title}
+          message="ReplyRight AI"
+        />
         <HeroList message="selected message" items={this.state.listItems}>
           <p className="ms-font-l">
             Modify the source files, then click <b>Run</b>.
