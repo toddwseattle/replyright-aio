@@ -30,6 +30,6 @@ export class ReplyRightSuggestion {
   }
   checkIfReply() {
     this.message.isReply =
-      this.message.subject.length > 3 ? this.message.subject.substring(0, 2).toUpperCase() == "RE:" : false;
+      this.message.subject.length >= 3 ? this.message.subject.substring(0, 3).toUpperCase() == "RE:" : false;
   }
 }
