@@ -28,7 +28,9 @@ async function action(event: Office.AddinCommands.Event) {
 
   try {
     await suggestion.initializeFromItem(item);
-    message.message = `from: ${suggestion.message.from.emailAddress} subj: ${suggestion.message.subject}`;
+    console.log(suggestion.message.body);
+    let positions = suggestion.getSubMessagePositions();
+    message.message = `from: ${suggestion.message.from.emailAddress} fr:${positions.length} subj: ${suggestion.message.subject}`;
     Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
     event.completed();
   } catch (error) {

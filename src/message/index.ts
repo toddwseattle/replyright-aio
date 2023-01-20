@@ -1,4 +1,5 @@
 /* global Office */
+import { ProgressIndicatorBase } from "@fluentui/react";
 import { getBodyTextPromise, getRecipientsPromise, getSubjectPromise, getFromPromise } from "./itemUtils";
 
 export interface MessageInfo {
@@ -39,6 +40,18 @@ export class ReplyRightSuggestion {
   private OfficeEA2EmailAddress(OfficeEmail: Office.EmailAddressDetails): EmailAddress {
     return { emailAddress: OfficeEmail.emailAddress, displayName: OfficeEmail.emailAddress };
   }
+  public getSubMessagePositions(): number[] {
+    if (this.message.body.length > 0) {
+      const fromRX = /From\:/g;
+      let indices = [];
+      let result: RegExpExecArray;
+      while ((result = fromRX.exec(this.message.body))) {
+        indices.push(result.index);
+      }
+      return indices;
+    } else return [];
+  }
+
   async initializeFromItem(item: Office.MessageCompose) {
     try {
       this.message.subject = await getSubjectPromise(item.subject);
