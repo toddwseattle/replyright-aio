@@ -13,7 +13,7 @@ describe("ReplyRightSuggestion", () => {
     expect(rrs.message.to).toStrictEqual(emptyEmails);
     expect(rrs.message.bcc).toStrictEqual(emptyEmails);
     expect(rrs.message.cc).toStrictEqual(emptyEmails);
-    expect(rrs.message.from).toStrictEqual({ displayname: "", address: "" });
+    expect(rrs.message.from).toStrictEqual({ displayName: "", emailAddress: "" });
     expect(rrs.message.body).toBe("");
   });
   it("should set the subject in the constructor if passed", () => {

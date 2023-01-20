@@ -61,7 +61,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Progress
           title={title}
           logo={require("./../../../assets/replythumb-300.png")}
-          message="Please sideload Replyight to see the application info"
+          message="Please sideload ReplyRight to see the application info"
         />
       );
     }

@@ -3,6 +3,8 @@
  * See LICENSE in the project root for license information.
  */
 
+import { ReplyRightSuggestion } from "../message";
+
 /* global global, Office, self, window */
 
 Office.onReady(() => {
@@ -13,7 +15,7 @@ Office.onReady(() => {
  * Shows a notification when the add-in command is executed.
  * @param event
  */
-function action(event: Office.AddinCommands.Event) {
+async function action(event: Office.AddinCommands.Event) {
   const message: Office.NotificationMessageDetails = {
     type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
     message: "Performed action.",
@@ -21,11 +23,21 @@ function action(event: Office.AddinCommands.Event) {
     persistent: true,
   };
 
-  // Show a notification message
-  Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+  const item = Office.context.mailbox.item;
+  const suggestion = new ReplyRightSuggestion();
+
+  try {
+    await suggestion.initializeFromItem(item);
+    message.message = `from: ${suggestion.message.from.emailAddress} subj: ${suggestion.message.subject}`;
+    Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+    event.completed();
+  } catch (error) {
+    message.message = "error:" + error.message;
+    Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+    event.completed();
+  }
 
   // Be sure to indicate when the add-in command function is complete
-  event.completed();
 }
 
 function getGlobal() {
