@@ -19,6 +19,7 @@ export interface EmailAddress {
 
 export class ReplyRightSuggestion {
   public message: MessageInfo;
+  public replyPrompt: string;
   public errorState: { hasError: boolean; message: string };
   constructor(message?: Partial<MessageInfo>) {
     this.message = {
@@ -31,6 +32,7 @@ export class ReplyRightSuggestion {
       body: "",
       ...message,
     };
+    this.errorState = { hasError: false, message: "" };
     if (this.message.body.length > 0) this.checkIfReply();
   }
   checkIfReply() {
@@ -40,9 +42,19 @@ export class ReplyRightSuggestion {
   private OfficeEA2EmailAddress(OfficeEmail: Office.EmailAddressDetails): EmailAddress {
     return { emailAddress: OfficeEmail.emailAddress, displayName: OfficeEmail.emailAddress };
   }
+  public buildPromptFromMessage(): void {
+    if (this.message?.body) {
+      const subMessages = this.getSubMessagePositions();
+      if (subMessages.length > 0) {
+        this.replyPrompt = this.message.body.substring(0, subMessages[0]);
+      } else this.replyPrompt = this.message.body;
+    } else {
+      this.errorState = { hasError: true, message: "enter some context to generate a reply" };
+    }
+  }
   public getSubMessagePositions(): number[] {
     if (this.message.body.length > 0) {
-      const fromRX = /From\:/g;
+      const fromRX = /From:/g;
       let indices = [];
       let result: RegExpExecArray;
       while ((result = fromRX.exec(this.message.body))) {

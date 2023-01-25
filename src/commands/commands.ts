@@ -28,10 +28,14 @@ async function action(event: Office.AddinCommands.Event) {
 
   try {
     await suggestion.initializeFromItem(item);
-    console.log(suggestion.message.body);
-    let positions = suggestion.getSubMessagePositions();
-    message.message = `from: ${suggestion.message.from.emailAddress} fr:${positions.length} subj: ${suggestion.message.subject}`;
-    Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+    suggestion.buildPromptFromMessage();
+    if (suggestion.errorState.hasError) {
+      message.message = `error ${suggestion.errorState.message} `;
+      Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+    } else {
+      message.message = `will create response based on ${suggestion.replyPrompt.length} character prompt`;
+      Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+    }
     event.completed();
   } catch (error) {
     message.message = "error:" + error.message;
