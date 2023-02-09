@@ -1,23 +1,9 @@
 /* global Office */
-import { ProgressIndicatorBase } from "@fluentui/react";
+//import { ProgressIndicatorBase } from "@fluentui/react";
 import { getBodyTextPromise, getRecipientsPromise, getSubjectPromise, getFromPromise } from "./itemUtils";
+import { MessageInfo, EmailAddress, ReplyRightSuggestionData } from "../shared/imessage";
 
-export interface MessageInfo {
-  isReply: boolean;
-  from: EmailAddress;
-  to: EmailAddress[];
-  cc: EmailAddress[];
-  bcc: EmailAddress[];
-  subject: string;
-  body: string;
-}
-
-export interface EmailAddress {
-  displayName: string;
-  emailAddress: string;
-}
-
-export class ReplyRightSuggestion {
+export class ReplyRightSuggestion implements ReplyRightSuggestionData {
   public message: MessageInfo;
   public replyPrompt: string;
   public errorState: { hasError: boolean; message: string };
@@ -32,6 +18,7 @@ export class ReplyRightSuggestion {
       body: "",
       ...message,
     };
+    this.replyPrompt = "create a plausible reply to this message";
     this.errorState = { hasError: false, message: "" };
     if (this.message.body.length > 0) this.checkIfReply();
   }
@@ -43,20 +30,44 @@ export class ReplyRightSuggestion {
     return { emailAddress: OfficeEmail.emailAddress, displayName: OfficeEmail.emailAddress };
   }
   public buildPromptFromMessage(): void {
-    if (this.message?.body) {
-      const subMessages = this.getSubMessagePositions();
-      if (subMessages.length > 0) {
-        this.replyPrompt = this.message.body.substring(0, subMessages[0]);
-      } else this.replyPrompt = this.message.body;
-    } else {
+    const MaxMessageSize = 4000;
+    if (!this.message?.body) {
+      this.errorState = { hasError: true, message: "enter some context or the start of a message to generate a reply" };
+      return;
+    }
+
+    const subMessages = this.getSubMessagePositions();
+    if (subMessages.length === 0) {
       this.errorState = { hasError: true, message: "enter some context to generate a reply" };
+      return;
+    }
+
+    this.replyPrompt = this.message.body.substring(0, subMessages[0]);
+    if (this.message.body.length > MaxMessageSize) {
+      let reply = "";
+      switch (subMessages.length) {
+        case 1:
+          reply = this.message.body.substring(0, MaxMessageSize);
+          break;
+        case 2:
+          const end = Math.min(subMessages[1] + 0.8 * MaxMessageSize, this.message.body.length);
+          reply = this.message.body.substring(subMessages[1], end);
+          break;
+        default:
+          reply =
+            "most current reply in thread is: " +
+            this.message.body.substring(subMessages[1], subMessages[2]).substring(0, MaxMessageSize / 2) +
+            "previous reply in thread is: " +
+            this.message.body.substring(subMessages[subMessages.length - 1], this.message.body.substring.length);
+      }
+      this.message.body = reply;
     }
   }
   public getSubMessagePositions(): number[] {
     if (this.message.body.length > 0) {
       const fromRX = /From:/g;
       let indices = [];
-      let result: RegExpExecArray;
+      let result: RegExpExecArray | null;
       while ((result = fromRX.exec(this.message.body))) {
         indices.push(result.index);
       }
@@ -76,7 +87,11 @@ export class ReplyRightSuggestion {
       this.checkIfReply();
     } catch (error) {
       this.errorState.hasError = true;
-      this.errorState.message = error.message;
+      if (error instanceof Error) {
+        this.errorState.message = error.message;
+      } else {
+        this.errorState.message = "uknown error";
+      }
     }
   }
 }

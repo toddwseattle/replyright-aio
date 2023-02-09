@@ -1,12 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1674177863100" clover="3.2.0">
-  <project timestamp="1674177863101" name="All files">
-    <metrics statements="18" coveredstatements="5" conditionals="6" coveredconditionals="0" methods="9" coveredmethods="2" elements="33" coveredelements="7" complexity="0" loc="18" ncloc="18" packages="1" files="1" classes="1"/>
+<coverage generated="1675958916675" clover="3.2.0">
+  <project timestamp="1675958916676" name="All files">
+    <metrics statements="67" coveredstatements="19" conditionals="25" coveredconditionals="5" methods="21" coveredmethods="2" elements="113" coveredelements="26" complexity="0" loc="67" ncloc="67" packages="1" files="2" classes="2"/>
+    <file name="index.ts" path="C:\gh\replyright-aio\src\message\index.ts">
+      <metrics statements="43" coveredstatements="15" conditionals="17" coveredconditionals="5" methods="9" coveredmethods="2"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="21" count="1" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="23" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="26" count="0" type="stmt"/>
+      <line num="30" count="0" type="stmt"/>
+      <line num="33" count="1" type="stmt"/>
+      <line num="34" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="36" count="0" type="stmt"/>
+      <line num="39" count="1" type="stmt"/>
+      <line num="40" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="41" count="0" type="stmt"/>
+      <line num="42" count="0" type="stmt"/>
+      <line num="45" count="1" type="stmt"/>
+      <line num="46" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="47" count="1" type="cond" truecount="1" falsecount="2"/>
+      <line num="49" count="0" type="stmt"/>
+      <line num="50" count="0" type="stmt"/>
+      <line num="52" count="1" type="stmt"/>
+      <line num="53" count="1" type="stmt"/>
+      <line num="54" count="1" type="stmt"/>
+      <line num="56" count="0" type="stmt"/>
+      <line num="63" count="1" type="stmt"/>
+      <line num="66" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="67" count="0" type="stmt"/>
+      <line num="68" count="0" type="stmt"/>
+      <line num="70" count="0" type="stmt"/>
+      <line num="71" count="0" type="stmt"/>
+      <line num="73" count="0" type="stmt"/>
+      <line num="74" count="0" type="stmt"/>
+      <line num="78" count="0" type="stmt"/>
+      <line num="79" count="0" type="stmt"/>
+      <line num="80" count="0" type="stmt"/>
+      <line num="81" count="0" type="stmt"/>
+      <line num="83" count="0" type="stmt"/>
+      <line num="84" count="0" type="stmt"/>
+      <line num="85" count="0" type="stmt"/>
+      <line num="86" count="0" type="stmt"/>
+      <line num="88" count="0" type="stmt"/>
+      <line num="89" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="90" count="0" type="stmt"/>
+      <line num="92" count="0" type="stmt"/>
+    </file>
     <file name="itemUtils.ts" path="C:\gh\replyright-aio\src\message\itemUtils.ts">
-      <metrics statements="18" coveredstatements="5" conditionals="6" coveredconditionals="0" methods="9" coveredmethods="2"/>
+      <metrics statements="24" coveredstatements="4" conditionals="8" coveredconditionals="0" methods="12" coveredmethods="0"/>
       <line num="6" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="1" type="stmt"/>
+      <line num="7" count="0" type="stmt"/>
+      <line num="8" count="0" type="stmt"/>
       <line num="9" count="0" type="cond" truecount="0" falsecount="2"/>
       <line num="10" count="0" type="stmt"/>
       <line num="12" count="0" type="stmt"/>
@@ -22,6 +68,12 @@
       <line num="30" count="0" type="cond" truecount="0" falsecount="2"/>
       <line num="31" count="0" type="stmt"/>
       <line num="33" count="0" type="stmt"/>
+      <line num="37" count="1" type="stmt"/>
+      <line num="38" count="0" type="stmt"/>
+      <line num="39" count="0" type="stmt"/>
+      <line num="40" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="41" count="0" type="stmt"/>
+      <line num="43" count="0" type="stmt"/>
     </file>
   </project>
 </coverage>

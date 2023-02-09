@@ -1,4 +1,4 @@
-import App from "./components/App";
+import App, { AppProps } from "./components/App";
 import { AppContainer } from "react-hot-loader";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { ThemeProvider } from "@fluentui/react";
@@ -11,9 +11,9 @@ initializeIcons();
 
 let isOfficeInitialized = false;
 
-const title = "Contoso Task Pane Add-in";
+const title = "ReplyRight AI for Outlook";
 
-const render = (Component) => {
+const render = (Component: React.ComponentType<AppProps>) => {
   ReactDOM.render(
     <AppContainer>
       <ThemeProvider>

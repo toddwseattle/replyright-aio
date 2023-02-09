@@ -16,29 +16,44 @@ export interface AppState {
 }
 
 export default class App extends React.Component<AppProps, AppState> {
+  getSomeGPTStuff() {
+    const useLocal = false;
+    const localUrl = "http://localhost:7071/api/getGPT3?prompt=";
+    const remoteUrl =
+      "https://replyright-ai-1.azurewebsites.net/api/getgpt3?code=OjY2sPgsqOw-HK-wpHcfFXBhRFz9Z3oBEAavh5LINVE_AzFus3Ke3g%3D%3D&prompt=";
+    let fetchUrl = useLocal ? localUrl : remoteUrl;
+    fetch(fetchUrl + this.state.listItems[1].primaryText)
+      .then((response) => response.text())
+      .then((data) => {
+        this.setState({
+          listItems: [this.state.listItems[0], { icon: "MessageFill", primaryText: `Message Body: ${data}` }],
+        });
+      });
+  }
   SubjId = 0;
   BodyId = 1;
-  constructor(props, context) {
+  constructor(props: AppProps, context: AppState) {
     super(props, context);
     this.state = {
       listItems: [],
     };
   }
   setMessageFields() {
-    const item = Office.context.mailbox.item;
-    item.subject.getAsync((subject) => {
-      if (subject.status == Office.AsyncResultStatus.Succeeded)
-        this.setState({
-          listItems: [{ icon: "PublicEMail", primaryText: `Subj: ${subject.value}` }, this.state.listItems[1]],
-        });
-    });
-    item.body.getAsync("text", (body) => {
-      if (body.status == Office.AsyncResultStatus.Succeeded)
-        this.setState({
-          listItems: [this.state.listItems[0], { icon: "MessageFill", primaryText: `Body: ${body.value}` }],
-        });
-    });
-    this.setMessageFields();
+    if (Office.context.mailbox.item) {
+      const item = Office.context.mailbox.item;
+      item.subject.getAsync((subject) => {
+        if (subject.status == Office.AsyncResultStatus.Succeeded)
+          this.setState({
+            listItems: [{ icon: "PublicEMail", primaryText: `Subj: ${subject.value}` }, this.state.listItems[1]],
+          });
+      });
+      item.body.getAsync("text", (body) => {
+        if (body.status == Office.AsyncResultStatus.Succeeded)
+          this.setState({
+            listItems: [this.state.listItems[0], { icon: "MessageFill", primaryText: `Message Body: ${body.value}` }],
+          });
+      });
+    }
   }
   componentDidMount() {
     this.setState({
@@ -51,6 +66,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
   click = async () => {
     this.setMessageFields();
+    this.getSomeGPTStuff();
   };
 
   render() {

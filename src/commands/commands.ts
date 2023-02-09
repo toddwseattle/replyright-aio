@@ -3,6 +3,7 @@
  * See LICENSE in the project root for license information.
  */
 
+import { getSuggestionChoices } from "../functions";
 import { ReplyRightSuggestion } from "../message";
 
 /* global global, Office, self, window */
@@ -24,26 +25,46 @@ async function action(event: Office.AddinCommands.Event) {
   };
 
   const item = Office.context.mailbox.item;
-  const suggestion = new ReplyRightSuggestion();
+  if (Office.context.mailbox.item) {
+    const suggestion = new ReplyRightSuggestion();
 
-  try {
-    await suggestion.initializeFromItem(item);
-    suggestion.buildPromptFromMessage();
-    if (suggestion.errorState.hasError) {
-      message.message = `error ${suggestion.errorState.message} `;
-      Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
-    } else {
-      message.message = `will create response based on ${suggestion.replyPrompt.length} character prompt`;
-      Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+    try {
+      await suggestion.initializeFromItem(item as Office.MessageCompose);
+      suggestion.buildPromptFromMessage();
+      if (suggestion.errorState.hasError && Office.context.mailbox.item) {
+        message.message = `error ${suggestion.errorState.message} `;
+        Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+      } else {
+        message.message = `calling create response based on ${suggestion.replyPrompt.length} character prompt`;
+        Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+        const choices = await getSuggestionChoices(suggestion);
+        if (choices[0] && choices[0].text) {
+          message.message = `have generate ${choices.length} choices`;
+          Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+          try {
+            const choice0message = JSON.parse(choices[0].text).body;
+            Office.context.mailbox.item.setSelectedDataAsync(choice0message, { coercionType: "text" });
+          } catch (foo) {
+            Office.context.mailbox.item.setSelectedDataAsync(choices[0].text, { coercionType: "test" });
+          }
+        } else {
+          message.message = `failed to  generate choices`;
+          Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+        }
+      }
+      event.completed();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        message.message = "error:" + error.message;
+        Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+      }
+      event.completed();
     }
-    event.completed();
-  } catch (error) {
-    message.message = "error:" + error.message;
-    Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
+
+    // Be sure to indicate when the add-in command function is complete
+  } else {
     event.completed();
   }
-
-  // Be sure to indicate when the add-in command function is complete
 }
 
 function getGlobal() {
