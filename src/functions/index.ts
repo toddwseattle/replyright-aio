@@ -32,7 +32,6 @@ export async function getSuggestionChoices(
   } catch (error) {
     // eslint-disable-next-line no-undef
     console.log(error);
-    return [];
   }
   return [];
 }

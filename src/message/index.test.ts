@@ -38,11 +38,11 @@ describe("ReplyRightSuggestion", () => {
 
     beforeEach(() => {
       object = new ReplyRightSuggestion({ body: "" });
-      object.getSubMessagePositions = jest.fn().mockReturnValue([0, 100]);
+      (object.getSubMessagePositions as jest.MockedFn<any>) = jest.fn().mockReturnValue([0, 100]);
     });
 
     it("sets errorState when message is undefined", () => {
-      object.message = undefined;
+      (object.message as any) = undefined;
       object.buildPromptFromMessage();
       expect(object.errorState).toEqual({
         hasError: true,
@@ -51,7 +51,7 @@ describe("ReplyRightSuggestion", () => {
     });
 
     it("sets errorState when message body is undefined", () => {
-      object.message.body = undefined;
+      (object.message.body as any) = undefined;
       object.buildPromptFromMessage();
       expect(object.errorState).toEqual({
         hasError: true,
@@ -62,7 +62,7 @@ describe("ReplyRightSuggestion", () => {
     it("sets replyPrompt to substring of message body when subMessages has 1 element", () => {
       const messageBody = " this is an message ".repeat(5);
       object.message.body = messageBody;
-      object.getSubMessagePositions.mockReturnValue([100]);
+      (object.getSubMessagePositions as jest.MockedFn<any>).mockReturnValue([100]);
       object.buildPromptFromMessage();
       expect(object.replyPrompt).toBe(object.message.body.substring(0, 100));
     });
@@ -76,7 +76,7 @@ describe("ReplyRightSuggestion", () => {
     it("sets replyPrompt to the first message part when subMessages has multiple elements and exceeds 4000 characters", () => {
       object.message.body = " this is an message ".repeat(220);
       const replyPromptShouldBe = object.message.body.substring(0, 100);
-      object.getSubMessagePositions.mockReturnValue([100, 200, 300]);
+      (object.getSubMessagePositions as jest.MockedFn<any>).mockReturnValue([100, 200, 300]);
       object.buildPromptFromMessage();
       expect(object.replyPrompt).toBe(replyPromptShouldBe);
     });

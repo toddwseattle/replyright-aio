@@ -39,7 +39,7 @@ async function action(event: Office.AddinCommands.Event) {
         Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
         const choices = await getSuggestionChoices(suggestion);
         if (choices[0] && choices[0].text) {
-          message.message = `have generate ${choices.length} choices`;
+          message.message = `have generate ${choices.length} choices, inserting the first`;
           Office.context.mailbox.item.notificationMessages.replaceAsync("action", message);
           try {
             const choice0message = JSON.parse(choices[0].text).body;
